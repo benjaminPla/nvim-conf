@@ -7,7 +7,6 @@ set cursorline
 set expandtab
 set hlsearch
 set incsearch
-set mouse=a
 set mouse=v
 set nowrap
 set number
@@ -26,6 +25,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'dracula/vim'
 Plug 'APZelos/blamer.nvim'
 Plug 'tmsvg/pear-tree'
+Plug 'preservim/nerdcommenter'
 call plug#end()
 
 " color schemes
@@ -45,10 +45,10 @@ inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 " move between panes to left/bottom/top/right
- nnoremap <C-h> <C-w>h
- nnoremap <C-j> <C-w>j
- nnoremap <C-k> <C-w>k
- nnoremap <C-l> <C-w>l
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
 
 " Press i to enter insert mode, and ii to exit insert mode.
 :inoremap ii <Esc>
@@ -75,3 +75,10 @@ let g:pear_tree_pairs = {
 let g:pear_tree_repeatable_expand = 0
 imap <space> <Plug>(PearTreeSpace)
 imap ll <Plug>(PearTreeJump)
+
+" nerdcommenter
+vmap <C-_> <plug>NERDCommenterToggle
+nmap <C-_> <plug>NERDCommenterToggle
+let g:NERDSpaceDelims = 1
+let g:NERDTrimTrailingWhitespace = 1
+let g:NERDToggleCheckAllLines = 1
