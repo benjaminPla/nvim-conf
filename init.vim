@@ -29,10 +29,10 @@ Plug 'tmsvg/pear-tree'
 call plug#end()
 
 " color schemes
- if (has("termguicolors"))
- set termguicolors
- endif
- syntax enable
+if (has("termguicolors"))
+set termguicolors
+endif
+syntax enable
 " colorscheme evening
 colorscheme dracula
 " open new split panes to right and below
@@ -61,4 +61,17 @@ nnoremap <C-f> :Rg<CR>
 let g:blamer_enabled = 1
 let g:blamer_delay = 30
 let g:blamer_date_format = '%d/%m/%y'
-let g:blamer_template = '<committer> <committer-time>'
+let g:blamer_template = '<committer> <committer-time> | <commit-short>'
+
+" Pear-Tree
+let g:pear_tree_pairs = {
+    \ '(': {'closer': ')'},
+    \ '[': {'closer': ']'},
+    \ '{': {'closer': '}'},
+    \ "'": {'closer': "'"},
+    \ '"': {'closer': '"'},
+    \ '<*>': {'closer': '</*>', 'not_if': ['img', 'input']},
+    \ }
+let g:pear_tree_repeatable_expand = 0
+imap <space> <Plug>(PearTreeSpace)
+imap ll <Plug>(PearTreeJump)
