@@ -22,7 +22,7 @@ syntax on
 call plug#begin('~/.local/share/nvim/site/autoload')
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'dracula/vim'
+Plug 'morhetz/gruvbox'
 Plug 'APZelos/blamer.nvim'
 Plug 'tmsvg/pear-tree'
 Plug 'preservim/nerdcommenter'
@@ -32,9 +32,10 @@ call plug#end()
 if (has("termguicolors"))
 set termguicolors
 endif
-syntax enable
-" colorscheme evening
-colorscheme dracula
+colorscheme gruvbox
+set background=dark
+nnoremap <silent>hs :call gruvbox#hls_toggle()<CR>
+
 " open new split panes to right and below
 set splitright
 set splitbelow
