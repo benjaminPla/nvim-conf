@@ -34,7 +34,7 @@ set termguicolors
 endif
 colorscheme gruvbox
 set background=dark
-nnoremap <silent>hs :call gruvbox#hls_toggle()<CR>
+nnoremap <silent>HH :call gruvbox#hls_toggle()<CR>
 
 " open new split panes to right and below
 set splitright
@@ -45,6 +45,7 @@ inoremap <A-j> <Esc>:m .+1<CR>==gi
 inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
+
 " move between panes to left/bottom/top/right
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
@@ -54,7 +55,12 @@ nnoremap <C-l> <C-w>l
 " Press i to enter insert mode, and ii to exit insert mode.
 :inoremap ii <Esc>
 
+" Create new line while in insert mode.
+inoremap <C-K> <Esc>O
+inoremap <C-J> <Esc>o
+
 " fzf
+let $FZF_DEFAULT_COMMAND='find -L'
 nnoremap <C-p> :Files<CR>
 nnoremap <C-f> :Rg<CR>
 
@@ -75,7 +81,7 @@ let g:pear_tree_pairs = {
     \ }
 let g:pear_tree_repeatable_expand = 0
 imap <space> <Plug>(PearTreeSpace)
-imap ll <Plug>(PearTreeJump)
+imap LL <Plug>(PearTreeJump)
 
 " nerdcommenter
 vmap <C-_> <plug>NERDCommenterToggle
