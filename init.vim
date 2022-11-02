@@ -26,6 +26,8 @@ Plug 'morhetz/gruvbox'
 Plug 'APZelos/blamer.nvim'
 Plug 'tmsvg/pear-tree'
 Plug 'preservim/nerdcommenter'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'sindrets/diffview.nvim'
 call plug#end()
 
 " color schemes
@@ -68,7 +70,7 @@ nnoremap <C-f> :Rg<CR>
 let g:blamer_enabled = 1
 let g:blamer_delay = 30
 let g:blamer_date_format = '%d/%m/%y'
-let g:blamer_template = '<committer> <committer-time> | <commit-short>'
+let g:blamer_template = '<committer> | <committer-time> | <commit-short>'
 
 " Pear-Tree
 let g:pear_tree_pairs = {
@@ -89,3 +91,7 @@ nmap <C-_> <plug>NERDCommenterToggle
 let g:NERDSpaceDelims = 1
 let g:NERDTrimTrailingWhitespace = 1
 let g:NERDToggleCheckAllLines = 1
+
+" Diffview
+nnoremap Dd :DiffviewOpen<CR>
+nnoremap DD :DiffviewFileHistory<CR>
