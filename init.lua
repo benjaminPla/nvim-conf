@@ -1,3 +1,5 @@
+-- curl -fLo ~/.config/nvim/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
 vim.cmd('filetype plugin indent on')
 vim.cmd('filetype plugin on')
 vim.o.autoindent = true
