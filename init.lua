@@ -2,7 +2,7 @@
 vim.cmd('filetype plugin indent on')
 vim.cmd('filetype plugin on')
 vim.o.autoindent = true
-vim.o.clipboard = 'unnamedplus'
+-- vim.o.clipboard = 'unnamedplus'
 vim.o.cursorline = true
 vim.o.expandtab = true
 vim.o.guicursor = 'a:block,a:blinkon100'
@@ -28,25 +28,39 @@ local Plug = vim.fn['plug#']
 
 vim.call('plug#begin', '~/.config/nvim/autoload')
 
+Plug('APZelos/blamer.nvim')
 Plug('junegunn/fzf', {['do'] = function() vim.fn['fzf#install']() end})
 Plug('junegunn/fzf.vim')
-Plug('morhetz/gruvbox')
-Plug('sbdchd/neoformat')
-Plug('APZelos/blamer.nvim')
-Plug('tmsvg/pear-tree')
-Plug('preservim/nerdcommenter')
-Plug('nvim-lua/plenary.nvim')
-Plug('sindrets/diffview.nvim')
 Plug('neovim/nvim-lspconfig')
+Plug('nvim-lua/plenary.nvim')
+Plug('preservim/nerdcommenter')
+Plug('sbdchd/neoformat')
+Plug('sindrets/diffview.nvim')
+Plug('tmsvg/pear-tree')
+
+-- svelte
+Plug('evanleck/vim-svelte')
+Plug('othree/html5.vim')
+Plug('pangloss/vim-javascript')
+Plug('HerringtonDarkholme/yats.vim')
 
 vim.call('plug#end')
+
 if vim.o.termguicolors then
   vim.o.termguicolors = true
 end
 
-vim.cmd('colorscheme gruvbox')
-vim.o.background = 'dark'
-vim.api.nvim_set_keymap('n', 'HH', ':call gruvbox#hls_toggle()<CR>', { silent = true })
+require('colors.theme_1')
+
+-- remap toggle highlight
+vim.keymap.set('n', 'HH', function()
+  vim.o.hlsearch = not vim.o.hlsearch
+end, { desc = "Toggle hlsearch" })
+
+-- remap yank
+vim.keymap.set("x", "p", '"_dP', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'y', '"+y', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('v', 'y', '"+y', { noremap = true, silent = true })
 
 -- transparency
 vim.cmd("highlight Normal guibg=none ctermbg=none")
@@ -72,9 +86,8 @@ vim.api.nvim_set_keymap('n', '<C-l>', '<C-w>l', { noremap = true })
 vim.api.nvim_set_keymap('n', '<A-n>', ':tabdo wincmd =<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<A-h>', ':vertical resize +2<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<A-l>', ':vertical resize -2<CR>', { noremap = true, silent = true })
-
--- Press i to enter insert mode, and ii to exit insert mode.
-vim.api.nvim_set_keymap('i', 'ii', '<Esc>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<A-k>', ':horizontal resize +2<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<A-j>', ':horizontal resize -2<CR>', { noremap = true, silent = true })
 
 -- Create new line while in insert mode.
 vim.api.nvim_set_keymap('i', '<C-K>', '<Esc>O', { noremap = true })
@@ -88,15 +101,16 @@ vim.api.nvim_set_keymap('v', '<C-d>d', [["hy:%s/<C-r>h//gc<left><left><left>]], 
 vim.env.FZF_DEFAULT_COMMAND = 'find -L'
 vim.api.nvim_set_keymap('n', '<C-p>', ':Files<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-f>', ':Rg<CR>', { noremap = true })
-vim.g.fzf_preview_window = { 'hidden,right,70%', 'ctrl-/' }
+vim.g.fzf_preview_window = { 'hidden,right,70%', 'alt-/' }
+
+-- ts-lsp
+vim.api.nvim_set_keymap('n', '<C-.>', ':lua vim.lsp.buf.references()<CR>', { noremap = true })
 
 -- neoformat
 function AutoFormat()
     local filetype = vim.fn.expand('%:e') -- Get the file extension
 
-    if filetype == 'py' then
-        vim.cmd('execute "Neoformat black"')
-    elseif filetype == 'rs' then
+    if filetype == 'rs' then
         vim.cmd('execute "Neoformat rustfmt"')
     else
         vim.cmd('execute "Neoformat prettier"')
@@ -124,7 +138,7 @@ vim.g.pear_tree_pairs = {
   ['{'] = {closer = '}'},
   ["'"] = {closer = "'"},
   ['"'] = {closer = '"'},
-  ['<*>'] = {closer = '</*>', not_if = {'img', 'input'}},
+  -- ['<*>'] = {closer = '</*>', not_if = {'img', 'input'}},
 }
 vim.g.pear_tree_repeatable_expand = 0
 vim.api.nvim_set_keymap('i', '<space>', '<Plug>(PearTreeSpace)', {})
@@ -156,18 +170,26 @@ vim.api.nvim_exec([[
 
 
 -- lsp
--- npm install -g pyright
 local nvim_lsp = require('lspconfig')
-nvim_lsp.pyright.setup({
-    filetypes = { "python" }
+vim.diagnostic.config({
+  signs = true,
+  underline = true,
+  update_in_insert = false,
+  virtual_text = true,
 })
 
 -- npm install -g typescript typescript-language-server
-nvim_lsp.tsserver.setup({
+nvim_lsp.ts_ls.setup({
     filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" }
+})
+
+-- npm install -g svelte-language-server
+nvim_lsp.svelte.setup({
+    filetypes = { "svelte" }
 })
 
 -- cargo install rust-analyzer
 nvim_lsp.rust_analyzer.setup({
-    filetypes = { "rust" }
+    filetypes = { "rust" },
 })
+
