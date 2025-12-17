@@ -50,7 +50,8 @@ if vim.o.termguicolors then
   vim.o.termguicolors = true
 end
 
-require('colors.theme_1')
+-- Load color scheme and get colors table
+colors = require('colors.theme_1')
 
 -- remap toggle highlight
 vim.keymap.set('n', 'HH', function()
@@ -138,7 +139,6 @@ vim.g.pear_tree_pairs = {
   ['{'] = {closer = '}'},
   ["'"] = {closer = "'"},
   ['"'] = {closer = '"'},
-  -- ['<*>'] = {closer = '</*>', not_if = {'img', 'input'}},
 }
 vim.g.pear_tree_repeatable_expand = 0
 vim.api.nvim_set_keymap('i', '<space>', '<Plug>(PearTreeSpace)', {})
@@ -148,16 +148,24 @@ vim.api.nvim_set_keymap('i', 'LL', '<Plug>(PearTreeJump)', {})
 vim.api.nvim_set_keymap('n', 'Dd', ':DiffviewOpen<CR>', {})
 vim.api.nvim_set_keymap('n', 'DD', ':DiffviewFileHistory<CR>', {})
 vim.api.nvim_set_keymap('n', 'II', ':tabclose<CR>', {})
-vim.cmd('highlight DiffAdd cterm=standout guifg=#000000 guibg=#b8bb26 gui=none')
-vim.cmd('highlight DiffChange cterm=standout guifg=#000000 guibg=#83a598 gui=none')
-vim.cmd('highlight DiffDelete cterm=standout guifg=#000000 guibg=#fb4934 gui=none')
-vim.cmd('highlight DiffText cterm=standout guifg=#000000 guibg=#83a598 gui=none')
+
+-- Diff highlights using colors from theme
+vim.cmd('highlight DiffAdd guibg=' .. colors.diff_add)
+vim.cmd('highlight DiffDelete guibg=' .. colors.diff_delete .. ' gui=italic')
+vim.cmd('highlight DiffChange guibg=' .. colors.diff_change)
+vim.cmd('highlight DiffText guibg=' .. colors.diff_text)
+vim.cmd('highlight link DiffviewDiffAdd DiffAdd')
+vim.cmd('highlight link DiffviewDiffDelete DiffDelete')
+vim.cmd('highlight link DiffviewDiffChange DiffChange')
+vim.cmd('highlight link DiffviewDiffText DiffText')
+vim.cmd('highlight CursorLine guibg=' .. colors.bg_dark)
+
 require('diffview').setup {
   use_icons = false,
 }
 
--- Visual Mode highlight
-vim.cmd('highlight Visual cterm=none guifg=#000000 guibg=#83a598 gui=none')
+-- Visual Mode highlight using colors from theme
+vim.cmd('highlight Visual cterm=none guifg=' .. colors.black .. ' guibg=' .. colors.visual_select .. ' gui=none')
 
 vim.cmd('highlight Normal guibg=none ctermbg=none')
 vim.cmd('highlight StatusLine guibg=none ctermbg=none')
@@ -170,7 +178,6 @@ vim.api.nvim_exec([[
 
 
 -- lsp
-local nvim_lsp = require('lspconfig')
 vim.diagnostic.config({
   signs = true,
   underline = true,
@@ -179,17 +186,25 @@ vim.diagnostic.config({
 })
 
 -- npm install -g typescript typescript-language-server
-nvim_lsp.ts_ls.setup({
-    filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" }
+vim.lsp.config('ts_ls', {
+    cmd = { 'typescript-language-server', '--stdio' },
+    filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+    root_markers = { 'package.json', 'tsconfig.json', 'jsconfig.json' },
 })
+vim.lsp.enable('ts_ls')
 
 -- npm install -g svelte-language-server
-nvim_lsp.svelte.setup({
-    filetypes = { "svelte" }
+vim.lsp.config('svelte', {
+    cmd = { 'svelteserver', '--stdio' },
+    filetypes = { "svelte" },
+    root_markers = { 'package.json', 'svelte.config.js' },
 })
+vim.lsp.enable('svelte')
 
 -- cargo install rust-analyzer
-nvim_lsp.rust_analyzer.setup({
+vim.lsp.config('rust_analyzer', {
+    cmd = { 'rust-analyzer' },
     filetypes = { "rust" },
+    root_markers = { 'Cargo.toml' },
 })
-
+vim.lsp.enable('rust_analyzer')
