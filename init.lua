@@ -149,16 +149,26 @@ vim.api.nvim_set_keymap('n', 'Dd', ':DiffviewOpen<CR>', {})
 vim.api.nvim_set_keymap('n', 'DD', ':DiffviewFileHistory<CR>', {})
 vim.api.nvim_set_keymap('n', 'II', ':tabclose<CR>', {})
 
--- Diff highlights using colors from theme
-vim.cmd('highlight DiffAdd guibg=' .. colors.diff_add)
-vim.cmd('highlight DiffDelete guibg=' .. colors.diff_delete .. ' gui=italic')
-vim.cmd('highlight DiffChange guibg=' .. colors.diff_change)
-vim.cmd('highlight DiffText guibg=' .. colors.diff_text)
+vim.cmd('highlight clear DiffAdd')
+vim.cmd('highlight clear DiffDelete')
+vim.cmd('highlight clear DiffChange')
+vim.cmd('highlight clear DiffText')
+
+vim.cmd('highlight DiffAdd guibg=' .. colors.diff_add .. ' guifg=NONE')
+vim.cmd('highlight DiffDelete guibg=' .. colors.diff_delete .. ' guifg=' .. colors.diff_delete)
+vim.cmd('highlight DiffChange guibg=NONE guifg=NONE')
+vim.cmd('highlight DiffText guibg=' .. colors.diff_text .. ' guifg=NONE gui=NONE')
+
 vim.cmd('highlight link DiffviewDiffAdd DiffAdd')
 vim.cmd('highlight link DiffviewDiffDelete DiffDelete')
 vim.cmd('highlight link DiffviewDiffChange DiffChange')
 vim.cmd('highlight link DiffviewDiffText DiffText')
-vim.cmd('highlight CursorLine guibg=' .. colors.bg_dark)
+
+vim.opt.fillchars:append({ diff = ' ' })
+vim.opt.diffopt:append('algorithm:histogram')
+vim.opt.diffopt:append('indent-heuristic')
+
+vim.cmd('highlight CursorLine guibg=' .. colors.bg_dark .. ' guifg=NONE')
 
 require('diffview').setup {
   use_icons = false,
