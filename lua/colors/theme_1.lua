@@ -84,5 +84,4 @@ highlight("DiffDelete",   { bg = "#3c1a1a" })
 highlight("DiffChange",   { bg = "#1a2a3c" })
 highlight("DiffText",     { bg = "#2a2e5b" })
 
--- Return the colors table so it can be used in other files
 return colors

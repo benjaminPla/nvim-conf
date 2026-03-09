@@ -51,7 +51,7 @@ if vim.o.termguicolors then
 end
 
 -- Load color scheme and get colors table
-colors = require('colors.theme_1')
+colors = require('colors.theme_0')
 
 -- remap toggle highlight
 vim.keymap.set('n', 'HH', function()
@@ -103,11 +103,21 @@ vim.env.FZF_DEFAULT_COMMAND = 'find -L'
 vim.api.nvim_set_keymap('n', '<C-p>', ':Files<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-f>', ':Rg<CR>', { noremap = true })
 vim.g.fzf_preview_window = { 'hidden,right,70%', 'alt-/' }
+vim.g.fzf_action = {
+  ['ctrl-l'] = 'vsplit',
+  ['return'] = 'edit',
+}
 
 -- ts-lsp
 vim.api.nvim_set_keymap('n', '<C-.>', ':lua vim.lsp.buf.references()<CR>', { noremap = true })
 
 -- neoformat
+vim.g.neoformat_rust_rustfmt = {
+    exe = 'rustfmt',
+    args = {'--edition', '2021'},
+    stdin = 1,
+}
+
 function AutoFormat()
     local filetype = vim.fn.expand('%:e') -- Get the file extension
 
@@ -117,6 +127,7 @@ function AutoFormat()
         vim.cmd('execute "Neoformat prettier"')
     end
 end
+
 vim.api.nvim_set_keymap('n', '<C-T>', ':lua AutoFormat()<CR>', { noremap = true })
 
 -- Blamer
@@ -184,6 +195,8 @@ vim.cmd('highlight StatusLineNC guibg=none ctermbg=none')
 -- hide netrw banner
 vim.api.nvim_exec([[
   autocmd FileType netrw let g:netrw_banner = 0
+  autocmd FileType netrw let g:netrw_browse_split = 0
+  autocmd FileType netrw nmap <buffer> <C-l> v
 ]], false)
 
 
