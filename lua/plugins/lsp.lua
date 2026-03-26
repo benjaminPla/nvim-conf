@@ -22,3 +22,16 @@ vim.lsp.config('rust_analyzer', {
 vim.lsp.enable('rust_analyzer')
 
 vim.api.nvim_set_keymap('n', '<C-.>', ':lua vim.lsp.buf.references()<CR>', { noremap = true })
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'qf',
+  callback = function()
+    vim.keymap.set('n', '<C-v>', function()
+      local entry = vim.fn.getqflist()[vim.fn.line('.')]
+      vim.cmd('wincmd p')
+      vim.cmd('vsplit')
+      vim.api.nvim_win_set_buf(0, entry.bufnr)
+      vim.api.nvim_win_set_cursor(0, { entry.lnum, entry.col - 1 })
+    end, { buffer = true })
+  end,
+})
