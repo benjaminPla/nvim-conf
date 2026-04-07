@@ -1,4 +1,5 @@
-vim.env.FZF_DEFAULT_COMMAND = 'find -L . -not -path "*/target/*" -not -path "*/node_modules/*"'
+-- vim.env.FZF_DEFAULT_COMMAND = 'find -L . -not -path "*/target/*" -not -path "*/node_modules/*"'
+vim.env.FZF_DEFAULT_COMMAND = 'find -L . -not -path "*/target/*"'
 
 vim.g.fzf_preview_window = { 'hidden,right,70%', 'alt-/' }
 vim.g.fzf_action = {
