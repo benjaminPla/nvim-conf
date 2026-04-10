@@ -37,7 +37,10 @@ map('i', '<C-K>', '<Esc>O', nore)
 map('i', '<C-J>', '<Esc>o', nore)
 
 -- Replace selection
-map('v', '<C-d>',  [["hy:%s///gc<left><left><left><left>]],    nore)
+vim.keymap.set('v', '<C-d>', function()
+  local left = vim.api.nvim_replace_termcodes('<Left>', true, false, true)
+  vim.fn.feedkeys(":s///gc" .. string.rep(left, 4), 'n')
+end, { noremap = true })
 map('v', '<C-d>d', [["hy:%s/<C-r>h//gc<left><left><left>]], nore)
 
 -- Section line macro
