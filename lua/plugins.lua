@@ -13,5 +13,4 @@ Plug('preservim/nerdcommenter')
 Plug('sbdchd/neoformat')
 Plug('sindrets/diffview.nvim')
 Plug('tmsvg/pear-tree')
-
 vim.call('plug#end')
